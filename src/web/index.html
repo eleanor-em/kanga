@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Kanga: Roo Interpreter</title>
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+	<link rel="stylesheet" href="https://prismjs.com/themes/prism.css">
+    <link rel="stylesheet" href="https://prismjs.com/plugins/line-numbers/prism-line-numbers.css">
+    <link rel="stylesheet" href="https://live.prismjs.com/prism-live.css">
+    <style>
+        .prism-live {
+            flex: 2;
+        }
+        textarea {
+            resize: none;
+            max-height: 60vh;
+        }
+        div.prism-live {
+            border: 1px solid black;
+            overflow: auto;
+            max-height: 60vh;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12pt;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 0.5em;">
+        <h4>Kanga: The Online Roo Interpreter</h4>
+        <div>
+            <button style="margin: 1em; padding: 0.3em;" onclick="submit()">Run!</button>
+        </div>
+        <div style="padding-left: 1em; padding-right: 1em; display: flex;">
+            <span style="display: flex; flex: 2; margin-right: 0.5em; flex-direction: column;">
+                <h3>Roo code</h3>
+                <textarea id="code" class="prism-live language-roo line-numbers fill"></textarea>
+                <h3>Console input</h3>
+                <textarea id="input" style="border: 1px solid black; font-size: 12pt; padding: 0.5em; flex: 1; margin-bottom: 1.5em;"></textarea>
+            </span>
+            <span style="flex: 1; margin-left: 0.5em">
+            <h3>Result</h3>
+            <pre style="overflow: auto; padding: 0.5em; height: 70vh; border: 1px solid black;" id="output">
+            </pre>
+            </span>
+        </div>
+    </div>
+    <script src="https://blissfuljs.com/bliss.shy.min.js"></script>
+    <script src="prism.js"></script>
+    <script src="https://prismjs.com/plugins/line-numbers/prism-line-numbers.js"></script>
+    <script src="https://live.prismjs.com/src/prism-live.js"></script>
+
+    <script>
+        const codeElem = document.getElementById("code");
+        const inputElem = document.getElementById("input");
+        const outputElem = document.getElementById("output");
+
+        function submit() {
+            const code = codeElem.value;
+            const input = inputElem.value;
+            
+            const msg = {
+                input,
+                code
+            };
+
+            fetch('/run', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(msg)
+            })
+            .then(res => {
+                return res.json();
+            })
+            .then(res => {
+                console.log(res);
+                outputElem.innerHTML = res.value;
+            })
+            .catch(err => {
+                alert('Error running code: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
