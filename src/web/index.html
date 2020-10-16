@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 
     <title>Kanga: Roo Interpreter</title>
+    <meta name="description" content="Roo language interpreter, online">
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -75,6 +76,12 @@
         const codeElem = document.getElementById("code");
         const inputElem = document.getElementById("input");
         const outputElem = document.getElementById("output");
+
+        codeElem.value = `procedure main ()
+{
+    writeln "Hello world!";
+}
+`;
 
         function submit() {
             const code = codeElem.value;
