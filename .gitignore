@@ -31,3 +31,8 @@ junk/
 **/node_modules/
 *.hs
 **/oz/
+src/bin/LICENSE
+src/bin/Makefile
+src/bin/README.md
+src/bin/test.sh
+src/bin/test/
