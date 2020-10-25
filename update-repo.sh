@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO=https://github.com/eleanor-em/roo-compiler/
+REPO=git@github.com:eleanor-em/roo-compiler.git
 REPO_DIR=roo-compiler
 
 rm -rf src/bin
