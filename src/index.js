@@ -36,8 +36,8 @@ app.post('/run', (req, res) => {
 
         fs.writeFile(`bin/src/${file_id}.roo`, code, err => {
             if (err) {
-                console.log(`Error writing to file: ${err}`);
-                res.send({ value: 'error during compilation' });
+                console.log(`[${new Date()}] Error writing to file: ${err}`);
+                res.send({ value: 'error writing to disk' });
                 cleanup(file_id);
             } else {
                 exec(`bin/Roo bin/src/${file_id}.roo > bin/src/${file_id}.oz`, (err, stdout, stderr) => {
@@ -50,14 +50,18 @@ app.post('/run', (req, res) => {
                     } else {
                         fs.writeFile(`bin/src/${file_id}.in`, input, err => {
                             if (err) {
-                                console.log(`Error writing to file: ${err}`);
-                                res.send({ value: 'error during compilation' });
+                                console.log(`[${new Date()}] Error writing to file: ${err}`);
+                                res.send({ value: 'error writing to disk' });
                                 cleanup(file_id);
                             } else {
-                                exec(`bin/oz/oz bin/src/${file_id}.oz < bin/src/${file_id}.in`, (err, stdout, stderr) => {
+                                exec(`bin/oz/oz bin/src/${file_id}.oz < bin/src/${file_id}.in`, { timeout: 5000 }, (err, stdout, stderr) => {
                                     if (err) {
-                                        console.log(`Error writing to file: ${err}`);
-                                        res.send({ value: 'error during execution' });
+                                        console.log(`[${new Date()}] Error writing to file: ${err}`);
+                                        if (stderr.length == 0) {
+                                            res.send({ value: 'error during execution:\ntimed out'});
+                                        } else {
+                                            res.send({ value: `error during execution:\n${stderr}` });
+                                        }
                                         cleanup(file_id);
                                     } else {
                                         res.send({ value: stdout + '\n' + cleanErr(stderr) });

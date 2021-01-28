@@ -1226,7 +1226,7 @@ Prism.languages.roo = {
 		pattern: /"([^\\\"]|\\.)*"/,
 		greedy: true,
 	},
-	'keyword': /\b(procedure|integer|val|boolean|array|record|write|writeln|read|while|do|od|if|then|else|fi|return)\b/,
+	'keyword': /\b(procedure|integer|val|boolean|array|record|write|writeln|read|while|do|od|if|then|else|fi|return|lambda)\b/,
 	'number': /\b0x[\da-f]+\b|(?:\b\d+\.?\d*|\B\.\d+)(?:e[+-]?\d+)?/i,
 	'operator': /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,
 	'punctuation': /[{}[\];(),.:]/,
